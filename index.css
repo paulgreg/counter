@@ -41,6 +41,8 @@ form {
   text-align: center;
 }
 .nb {
+  display: inline-block;
+  min-width: 1.5em;
   font-size: 0.8em;
 }
 .plus,
@@ -49,4 +51,5 @@ form {
 }
 .subtotal {
   text-align: right;
+  min-width: 2em;
 }
