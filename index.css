@@ -1,0 +1,52 @@
+* {
+  font-size: 1.1em;
+}
+
+input,
+button {
+  padding: 0.25em;
+  width: unset;
+}
+
+form {
+  display: flex;
+}
+
+.name {
+  flex: 1;
+}
+
+h2 {
+  display: flex;
+}
+
+h2 span.title {
+  flex: 1;
+}
+
+form {
+  padding: 0.2em 0;
+}
+
+.item {
+  display: flex;
+}
+
+.point {
+  width: 4em;
+  text-align: right;
+}
+.numbers {
+  width: 5em;
+  text-align: center;
+}
+.nb {
+  font-size: 0.8em;
+}
+.plus,
+.minus {
+  width: 2em;
+}
+.subtotal {
+  text-align: right;
+}
