@@ -23,9 +23,6 @@ form.addEventListener(
   (e) => {
     e.preventDefault();
     const item = templateItem.content.cloneNode(true);
-
-    const point = parseInt(inputPoint.value, 10);
-
     item.querySelector(".name").innerText = inputName.value;
     item.querySelector(".point").innerText = inputPoint.value;
     inputName.value = "";
