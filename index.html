@@ -4,29 +4,32 @@
 <head>
     <meta charset="utf-8">
     <title>Counter</title>
-    <link rel="stylesheet" type="text/css" href="./simple-v1.css">
     <link rel="stylesheet" type="text/css" href="./index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-    <h1>Counter</h1>
+    <header>
+        <h1>Counter</h1>
+    </header>
     <section id="list">
     </section>
     <h2><span class="title">Total</span><span id="total">0</span></h2>
     <form>
         <input class="name" type="text" name="name" placeholder="name" required>
-        <input class="point" type="number" name="point" value="1" required />
+        <input class="point" type="number" name="point" placeholder="point" required />
         <input type="submit" value="Ok" />
     </form>
     <template id="item">
-        <div class="item"><span class="name"></span>
-            <span class="point"></span>x
-            <span class="numbers">
-                <button class="plus">+</button>
-                <span class="nb">0</span>
-                <button class="minus">-</button>
+        <div class="item">
+            <span class="name"></span>
+            <span class="delete" title="delete">➖</span>
+            <span class="pointX">
+                <span class="point"></span>x
             </span>
+            <span class="nb">0</span>
+            <button class="plus">+</button>
+            <button class="minus">-</button>
             <span class="subtotal">0</span>
         </div>
     </template>

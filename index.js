@@ -5,6 +5,13 @@ const templateItem = document.querySelector("#item");
 const list = document.querySelector("#list");
 const total = document.querySelector("#total");
 
+const save = () => localStorage.setItem(KEY, JSON.stringify(data));
+
+const addData = ({ name, point }) => {
+  data.push({ name, point });
+  save();
+};
+
 const compute = () => {
   let sum = 0;
   for (let i = 0; i < list.children.length; i++) {
@@ -18,41 +25,72 @@ const compute = () => {
   total.innerText = String(sum);
 };
 
+const createRow = ({ name, point }, idx) => {
+  const item = templateItem.content.cloneNode(true);
+  item.querySelector(".name").innerText = name;
+  item.querySelector(".point").innerText = point;
+  item.querySelector(".item").dataset.idx = idx;
+
+  const nb = item.querySelector(".nb");
+
+  item.querySelector(".plus").addEventListener(
+    "click",
+    (e) => {
+      e.stopPropagation();
+      const v = parseInt(nb.innerText, 10);
+      nb.innerText = v + 1;
+      compute();
+    },
+    false
+  );
+
+  item.querySelector(".minus").addEventListener(
+    "click",
+    (e) => {
+      e.stopPropagation();
+      const v = parseInt(nb.innerText, 10);
+      if (v === 0) return;
+      nb.innerText = v - 1;
+      compute();
+    },
+    false
+  );
+
+  list.appendChild(item);
+};
+
 form.addEventListener(
   "submit",
   (e) => {
     e.preventDefault();
-    const item = templateItem.content.cloneNode(true);
-    item.querySelector(".name").innerText = inputName.value;
-    item.querySelector(".point").innerText = inputPoint.value;
+    const name = inputName.value;
+    const point = inputPoint.value;
+
+    createRow({ name, point }, data.length);
+    addData({ name, point });
+
     inputName.value = "";
     inputPoint.value = "1";
     inputName.focus();
-
-    const nb = item.querySelector(".nb");
-
-    item.querySelector(".plus").addEventListener(
-      "click",
-      () => {
-        const v = parseInt(nb.innerText, 10);
-        nb.innerText = v + 1;
-        compute();
-      },
-      false
-    );
-
-    item.querySelector(".minus").addEventListener(
-      "click",
-      () => {
-        const v = parseInt(nb.innerText, 10);
-        if (v === 0) return;
-        nb.innerText = v - 1;
-        compute();
-      },
-      false
-    );
-
-    list.appendChild(item);
   },
   false
 );
+
+document.addEventListener(
+  "click",
+  (e) => {
+    e.stopPropagation();
+    if (e.target.className === "delete" && confirm("delete ?")) {
+      const item = e.target.parentElement;
+      const idx = parseInt(item.dataset.idx, 10);
+      list.removeChild(item);
+      data.splice(idx, 1);
+      save();
+    }
+  },
+  false
+);
+
+const KEY = "counter_data";
+const data = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+data.forEach((item, idx) => createRow(item, idx));

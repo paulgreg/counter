@@ -2,54 +2,83 @@
   font-size: 1.1em;
 }
 
-input,
-button {
-  padding: 0.25em;
-  width: unset;
+html {
+  font-family: sans-serif;
 }
 
-form {
+body {
   display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 auto;
 }
 
-.name {
-  flex: 1;
+header {
+  background-color: darkblue;
+  color: white;
+  border-bottom: 1px solid black;
+  margin-bottom: 1em;
+}
+
+h1 {
+  margin: 0.25em;
 }
 
 h2 {
   display: flex;
+  justify-content: space-between;
+  border-top: 1px solid darkblue;
+  border-bottom: 1px solid darkblue;
 }
 
 h2 span.title {
-  flex: 1;
+  margin: 0.25em;
 }
 
-form {
-  padding: 0.2em 0;
+h2 span#total {
+  text-align: right;
+  margin: 0.25em;
+}
+
+input,
+button {
+  padding: 0.25em;
 }
 
 .item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 8fr 1fr 2fr 1fr 0.5fr 0.5fr 3fr;
+  justify-content: space-between;
+  gap: 0.25em;
 }
 
-.point {
-  width: 4em;
-  text-align: right;
+.item * {
+  align-self: center;
 }
-.numbers {
-  width: 5em;
+
+.item .pointX,
+.item .subtotal {
+  text-align: right;
+  margin-right: 0.25em;
+}
+
+.item .nb {
   text-align: center;
 }
-.nb {
-  display: inline-block;
-  min-width: 1.5em;
-  font-size: 0.8em;
+
+.item .del {
+  cursor: pointer;
 }
-.plus,
-.minus {
-  width: 2em;
+
+form {
+  justify-content: space-around;
+  margin: 0.25em;
 }
-.subtotal {
-  text-align: right;
-  min-width: 2em;
+
+form .name {
+  min-width: 8em;
+}
+form .point {
+  width: 3em;
 }
