@@ -94,3 +94,23 @@ document.addEventListener(
 const KEY = "counter_data";
 const data = JSON.parse(localStorage.getItem(KEY) ?? "[]");
 data.forEach((item, idx) => createRow(item, idx));
+
+const registerServiceWorker = async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
+      });
+      if (registration.installing) {
+        console.log("Service working installing");
+      } else if (registration.waiting) {
+        console.log("Service working installed");
+      } else if (registration.active) {
+        console.log("Service working active");
+      }
+    } catch (error) {
+      console.error(`error while installer service worker: ${error}`);
+    }
+  }
+};
+registerServiceWorker();
