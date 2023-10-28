@@ -48,7 +48,7 @@ button {
 
 .item {
   display: grid;
-  grid-template-columns: 8fr 1fr 2fr 1fr 0.5fr 0.5fr 3fr;
+  grid-template-columns: min-content 4fr 1fr 1fr min-content min-content 2fr;
   justify-content: space-between;
   gap: 0.25em;
 }
@@ -71,12 +71,18 @@ button {
   cursor: pointer;
 }
 
+details {
+  margin-bottom: 0.5em;
+}
+
 form {
+  display: flex;
   justify-content: space-around;
   margin: 0.25em;
 }
 
 form .name {
+  flex: 1;
   min-width: 8em;
 }
 form .point {

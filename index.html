@@ -14,18 +14,21 @@
     <header>
         <h1>Counter</h1>
     </header>
+    <details>
+        <summary>Add</summary>
+        <form>
+            <input class="name" type="text" name="name" placeholder="name" required>
+            <input class="point" type="number" name="point" placeholder="point" required />
+            <input type="submit" value="Ok" />
+        </form>
+    </details>
     <section id="list">
     </section>
     <h2><span class="title">Total</span><span id="total">0</span></h2>
-    <form>
-        <input class="name" type="text" name="name" placeholder="name" required>
-        <input class="point" type="number" name="point" placeholder="point" required />
-        <input type="submit" value="Ok" />
-    </form>
     <template id="item">
         <div class="item">
+            <span class="delete" title="delete">🗑️</span>
             <span class="name"></span>
-            <span class="delete" title="delete">➖</span>
             <span class="pointX">
                 <span class="point"></span>x
             </span>
