@@ -4,6 +4,7 @@ const inputPoint = form.querySelector("input[name=point]");
 const templateItem = document.querySelector("#item");
 const list = document.querySelector("#list");
 const total = document.querySelector("#total");
+const reset = document.querySelector("input[type=reset]");
 
 const KEY = "counter_data";
 const data = JSON.parse(localStorage.getItem(KEY) ?? "[]");
@@ -26,8 +27,7 @@ const addRowToData = ({ name, point, nb }) => data.push({ name, point, nb });
 
 const compute = () => {
   let sum = 0;
-  for (let i = 0; i < list.children.length; i++) {
-    const item = list.children[i];
+  for (const item of list.children) {
     const point = parseInt(item.querySelector(".point").innerText, 10);
     const nb = parseInt(item.querySelector(".nb").innerText, 10);
     const subtotal = nb * point;
@@ -35,6 +35,17 @@ const compute = () => {
     sum += subtotal;
   }
   total.innerText = String(sum);
+};
+
+const resetPoints = () => {
+  if (!confirm("Reset points ?")) return;
+  for (const item of list.children) {
+    item.querySelector(".nb").innerText = "0";
+    const name = item.querySelector(".name").innerText;
+    updateNb(name, 0);
+  }
+  compute();
+  delayedSave();
 };
 
 const createRow = ({ name, point, nb }, idx) => {
@@ -98,6 +109,8 @@ document.addEventListener(
 
 data.forEach((item, idx) => createRow(item, idx));
 compute();
+
+reset.addEventListener("click", resetPoints, false);
 
 const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
