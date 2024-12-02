@@ -5,12 +5,24 @@ const templateItem = document.querySelector("#item");
 const list = document.querySelector("#list");
 const total = document.querySelector("#total");
 
+const KEY = "counter_data";
+const data = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+
 const save = () => localStorage.setItem(KEY, JSON.stringify(data));
 
-const addData = ({ name, point }) => {
-  data.push({ name, point });
-  save();
+let saveTimeout;
+
+const delayedSave = () => {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(save, 500);
 };
+
+const updateNb = (nameToSearch, nb) => {
+  const item = data.find(({ name }) => nameToSearch === name);
+  if (item) item.nb = nb;
+};
+
+const addRowToData = ({ name, point, nb }) => data.push({ name, point, nb });
 
 const compute = () => {
   let sum = 0;
@@ -25,36 +37,28 @@ const compute = () => {
   total.innerText = String(sum);
 };
 
-const createRow = ({ name, point }, idx) => {
+const createRow = ({ name, point, nb }, idx) => {
   const item = templateItem.content.cloneNode(true);
   item.querySelector(".name").innerText = name;
   item.querySelector(".point").innerText = point;
   item.querySelector(".item").dataset.idx = idx;
 
-  const nb = item.querySelector(".nb");
+  const nbEl = item.querySelector(".nb");
+  nbEl.innerText = nb ?? "0";
 
-  item.querySelector(".plus").addEventListener(
-    "click",
-    (e) => {
-      e.stopPropagation();
-      const v = parseInt(nb.innerText, 10);
-      nb.innerText = v + 1;
-      compute();
-    },
-    false
-  );
+  const updateCounter = (add) => (e) => {
+    e.stopPropagation();
+    const existingValue = parseInt(nbEl.innerText, 10);
+    if (!add && existingValue === 0) return;
+    const updateValue = add ? existingValue + 1 : existingValue - 1;
+    nbEl.innerText = updateValue;
+    compute();
+    updateNb(name, updateValue);
+    delayedSave();
+  };
 
-  item.querySelector(".minus").addEventListener(
-    "click",
-    (e) => {
-      e.stopPropagation();
-      const v = parseInt(nb.innerText, 10);
-      if (v === 0) return;
-      nb.innerText = v - 1;
-      compute();
-    },
-    false
-  );
+  item.querySelector(".plus").addEventListener("click", updateCounter(true), false);
+  item.querySelector(".minus").addEventListener("click", updateCounter(false), false);
 
   list.appendChild(item);
 };
@@ -65,9 +69,10 @@ form.addEventListener(
     e.preventDefault();
     const name = inputName.value;
     const point = inputPoint.value;
+    const nb = "0";
 
-    createRow({ name, point }, data.length);
-    addData({ name, point });
+    createRow({ name, point, nb }, data.length);
+    addRowToData({ name, point, nb });
 
     inputName.value = "";
     inputPoint.value = "1";
@@ -85,15 +90,14 @@ document.addEventListener(
       const idx = parseInt(item.dataset.idx, 10);
       list.removeChild(item);
       data.splice(idx, 1);
-      save();
+      delayedSave();
     }
   },
   false
 );
 
-const KEY = "counter_data";
-const data = JSON.parse(localStorage.getItem(KEY) ?? "[]");
 data.forEach((item, idx) => createRow(item, idx));
+compute();
 
 const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
